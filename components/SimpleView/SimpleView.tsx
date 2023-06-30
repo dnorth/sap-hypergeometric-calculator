@@ -1,21 +1,10 @@
 import { useState, Dispatch, SetStateAction } from "react";
 
+import { calculateProbabilities } from "../../utils/calculatingUtils";
+
+import Pack from "../../types/Pack";
+import { FormulaValues } from "../../types/SimpleView";
 import styles from "./SimpleView.module.css";
-
-enum Pack {
-  Turtle = "Turtle Pack",
-  Puppy = "Puppy Pack",
-  Star = "Star Pack",
-  Golden = "Golden Pack",
-}
-
-interface FormulaValues {
-  pack: Pack;
-  turnNumber: number;
-  numPets: number;
-  numRolls: number;
-  numFrozenSlots: number;
-}
 
 export default function SimpleView() {
   const [formulaValues, setFormulaValues] = useState<FormulaValues>({
@@ -26,12 +15,14 @@ export default function SimpleView() {
     numFrozenSlots: 0,
   });
 
-  const calculateProbabilities = (event: React.SyntheticEvent) => {
+  const calculate = (event: React.SyntheticEvent) => {
     event.preventDefault();
+
+    calculateProbabilities(formulaValues);
   };
 
   return (
-    <form className={styles.form} onSubmit={calculateProbabilities}>
+    <form className={styles.form} onSubmit={calculate}>
       <PackSelect
         value={formulaValues.pack}
         name="pack"
