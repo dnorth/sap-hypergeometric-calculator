@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 
 import { calculateProbabilities } from "../../utils/calculatingUtils";
 
@@ -14,20 +14,15 @@ export default function SimpleView() {
     numRolls: 1,
     numFrozenSlots: 0,
   });
+  const [probabilities, setProbabilities] = useState<string | null>(null);
 
-  const [probabilities, setProbabilities] = useState<number | null>(null);
-
-  const calculate = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-
-    const probs = calculateProbabilities(formulaValues);
-
-    setProbabilities(probs);
-  };
+  useEffect(() => {
+    setProbabilities(calculateProbabilities(formulaValues));
+  }, [formulaValues]);
 
   return (
     <>
-      <form className={styles.form} onSubmit={calculate}>
+      <form className={styles.form}>
         <PackSelect
           value={formulaValues.pack}
           name="pack"
@@ -57,13 +52,11 @@ export default function SimpleView() {
           name="numFrozenSlots"
           onChange={setFormulaValues}
         />
-        <div>
-          <input type="submit" value="Calculate" />
-        </div>
       </form>
       {probabilities && (
         <div className={styles.probabilitiesContainer}>
-          Probability of a single roll: {probabilities}%
+          Probability to find at least 1 pet given {formulaValues.numRolls}{" "}
+          roll(s): {probabilities}%
         </div>
       )}
     </>

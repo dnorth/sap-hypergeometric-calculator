@@ -4,6 +4,8 @@ import StarPackJson from "../data/StarPack.json";
 import GoldenPackJson from "../data/GoldenPack.json";
 import GeneralInfoJson from "../data/GeneralInfo.json";
 
+import cdf from "./cdfUtil";
+
 import Pack from "../types/Pack";
 import { FormulaValues } from "../types/SimpleView";
 
@@ -23,7 +25,22 @@ export const calculateProbabilities = (values: FormulaValues) => {
     numSlotsAvailable
   );
 
-  return (100 * singleRollProbability).toFixed(1);
+  console.log("Shop Chance: ", (100 * singleRollProbability).toFixed(1));
+
+  const cumulativeProbability = getCumulativeDistributionProbability(
+    values.numRolls,
+    singleRollProbability
+  );
+
+  return (100 * cumulativeProbability).toFixed(1);
+};
+
+const getCumulativeDistributionProbability = (
+  numRolls: number, //N
+  singleRollProbability: number //P
+) => {
+  // cdf(N, P);  P(X>=1)
+  return cdf(numRolls, singleRollProbability);
 };
 
 const getProbabilityOfSingleRoll = (
@@ -33,7 +50,12 @@ const getProbabilityOfSingleRoll = (
 ) => {
   const probabilityOfOneSlot = (totalPets - numPetsWanted) / totalPets;
 
-  return 1 - Math.pow(probabilityOfOneSlot, numSlotsAvailable);
+  console.log(
+    "Single Slot Chance: ",
+    (100 * (1 - probabilityOfOneSlot)).toFixed(1)
+  );
+
+  return Math.max(0, 1 - Math.pow(probabilityOfOneSlot, numSlotsAvailable));
 };
 
 const getRelevantTurnNumber = (turnNumber: number) => {

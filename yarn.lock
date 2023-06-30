@@ -1628,6 +1628,10 @@ source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
 
+statistics.js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/statistics.js/-/statistics.js-1.0.0.tgz#44508ad814030043a197cf1943de60e91846eca7"
+
 streamsearch@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/streamsearch/-/streamsearch-1.1.0.tgz#404dd1e2247ca94af554e841a8ef0eaa238da764"
