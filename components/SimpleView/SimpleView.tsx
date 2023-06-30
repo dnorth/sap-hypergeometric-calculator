@@ -15,47 +15,58 @@ export default function SimpleView() {
     numFrozenSlots: 0,
   });
 
+  const [probabilities, setProbabilities] = useState<number | null>(null);
+
   const calculate = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    calculateProbabilities(formulaValues);
+    const probs = calculateProbabilities(formulaValues);
+
+    setProbabilities(probs);
   };
 
   return (
-    <form className={styles.form} onSubmit={calculate}>
-      <PackSelect
-        value={formulaValues.pack}
-        name="pack"
-        onChange={setFormulaValues}
-      />
-      <InputField
-        label="Turn Number: "
-        value={formulaValues.turnNumber}
-        name="turnNumber"
-        onChange={setFormulaValues}
-      />
-      <InputField
-        label="Number of pets you're rolling for: "
-        value={formulaValues.numPets}
-        name="numPets"
-        onChange={setFormulaValues}
-      />
-      <InputField
-        label="Number of rolls: "
-        value={formulaValues.numRolls}
-        name="numRolls"
-        onChange={setFormulaValues}
-      />
-      <InputField
-        label="Number of frozen slots: "
-        value={formulaValues.numFrozenSlots}
-        name="numFrozenSlots"
-        onChange={setFormulaValues}
-      />
-      <div>
-        <input type="submit" value="Calculate" />
-      </div>
-    </form>
+    <>
+      <form className={styles.form} onSubmit={calculate}>
+        <PackSelect
+          value={formulaValues.pack}
+          name="pack"
+          onChange={setFormulaValues}
+        />
+        <InputField
+          label="Turn Number: "
+          value={formulaValues.turnNumber}
+          name="turnNumber"
+          onChange={setFormulaValues}
+        />
+        <InputField
+          label="Number of pets you're rolling for: "
+          value={formulaValues.numPets}
+          name="numPets"
+          onChange={setFormulaValues}
+        />
+        <InputField
+          label="Number of rolls: "
+          value={formulaValues.numRolls}
+          name="numRolls"
+          onChange={setFormulaValues}
+        />
+        <InputField
+          label="Number of frozen slots: "
+          value={formulaValues.numFrozenSlots}
+          name="numFrozenSlots"
+          onChange={setFormulaValues}
+        />
+        <div>
+          <input type="submit" value="Calculate" />
+        </div>
+      </form>
+      {probabilities && (
+        <div className={styles.probabilitiesContainer}>
+          Probability of a single roll: {probabilities}%
+        </div>
+      )}
+    </>
   );
 }
 

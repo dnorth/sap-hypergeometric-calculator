@@ -1,0 +1,26 @@
+{
+  "1": {
+    "slots": 3,
+    "foodSlots": 1
+  },
+  "3": {
+    "slots": 3,
+    "foodSlots": 1
+  },
+  "5": {
+    "slots": 4,
+    "foodSlots": 2
+  },
+  "7": {
+    "slots": 4,
+    "foodSlots": 2
+  },
+  "9": {
+    "slots": 5,
+    "foodSlots": 2
+  },
+  "11": {
+    "slots": 5,
+    "foodSlots": 2
+  }
+}

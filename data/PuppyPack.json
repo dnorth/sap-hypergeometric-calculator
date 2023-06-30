@@ -1,27 +1,51 @@
 {
   "1": {
     "pets": 10,
-    "food": 2
+    "food": 2,
+    "total": {
+      "pets": 10,
+      "food": 2
+    }
   },
   "3": {
     "pets": 10,
-    "food": 3
+    "food": 3,
+    "total": {
+      "pets": 20,
+      "food": 5
+    }
   },
   "5": {
     "pets": 10,
-    "food": 3
+    "food": 3,
+    "total": {
+      "pets": 30,
+      "food": 8
+    }
   },
   "7": {
     "pets": 10,
-    "food": 3
+    "food": 3,
+    "total": {
+      "pets": 40,
+      "food": 11
+    }
   },
   "9": {
     "pets": 10,
-    "food": 3
+    "food": 3,
+    "total": {
+      "pets": 50,
+      "food": 14
+    }
   },
   "11": {
     "pets": 10,
-    "food": 3
+    "food": 3,
+    "total": {
+      "pets": 60,
+      "food": 17
+    }
   },
   "total": {
     "pets": 60,
