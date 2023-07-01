@@ -59,12 +59,16 @@ const getProbabilityOfSingleRoll = (
 };
 
 const getRelevantTurnNumber = (turnNumber: number) => {
+  // turns below 1 dont make sense
+  const MIN_RELEVANT_TURN = 1;
+
   //packs don't get more pets or food after turn 11.
   const MAX_RELEVANT_TURN = 11;
 
   const nearestOddNumber = turnNumber % 2 === 0 ? turnNumber - 1 : turnNumber;
 
-  return Math.min(MAX_RELEVANT_TURN, nearestOddNumber);
+  //bounded between 1 and 11
+  return Math.max(MIN_RELEVANT_TURN, Math.min(MAX_RELEVANT_TURN, nearestOddNumber));
 };
 
 const getPackInfo = (pack: Pack) => {
