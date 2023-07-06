@@ -8,8 +8,12 @@ import cdf from "./cdfUtil";
 
 import Pack from "../types/Pack";
 import { FormulaValues } from "../types/SimpleView";
+import { CDFValues } from "../types/cdfUtil";
 
-export const calculateProbabilities = (values: FormulaValues) => {
+export const calculateProbabilities = (
+  values: FormulaValues,
+  numRolls: number = 30
+): CDFValues => {
   const packInfo = getPackInfo(values.pack);
   const generalInfo = getGeneralInfo();
   const relevantTurnNumber = getRelevantTurnNumber(values.turnNumber);
@@ -19,46 +23,34 @@ export const calculateProbabilities = (values: FormulaValues) => {
     generalInfo[relevantTurnNumber].slots - values.numFrozenSlots;
   const totalPetsOnTurn = turnInfo.total.pets;
 
-  const singleRollProbability = getProbabilityOfSingleRoll(
+  const singleRollProbability = getShopChance(
     totalPetsOnTurn,
-    values.numPets,
+    values.numPetsToFind,
     numSlotsAvailable
   );
 
-  console.log("Shop Chance: ", (100 * singleRollProbability).toFixed(1));
-
-  const cumulativeProbability = getCumulativeDistributionProbability(
-    values.numRolls,
-    singleRollProbability
-  );
-
-  return (100 * cumulativeProbability).toFixed(1);
-};
-
-const getCumulativeDistributionProbability = (
-  numRolls: number, //N
-  singleRollProbability: number //P
-) => {
   // cdf(N, P);  P(X>=1)
-  return cdf(numRolls, singleRollProbability);
+  const cumulativeProbabilityArray = cdf(numRolls, singleRollProbability);
+
+  return cumulativeProbabilityArray;
 };
 
-const getProbabilityOfSingleRoll = (
+export const getShopChance = (
   totalPets: number,
-  numPetsWanted: number,
+  numPetsToFind: number,
   numSlotsAvailable: number
 ) => {
-  const probabilityOfOneSlot = (totalPets - numPetsWanted) / totalPets;
+  const probabilityOfOneSlot = (totalPets - numPetsToFind) / totalPets;
 
-  console.log(
-    "Single Slot Chance: ",
-    (100 * (1 - probabilityOfOneSlot)).toFixed(1)
+  const shopChance = Math.max(
+    0,
+    1 - Math.pow(probabilityOfOneSlot, numSlotsAvailable)
   );
 
-  return Math.max(0, 1 - Math.pow(probabilityOfOneSlot, numSlotsAvailable));
+  return getFixed(shopChance, 3);
 };
 
-const getRelevantTurnNumber = (turnNumber: number) => {
+export const getRelevantTurnNumber = (turnNumber: number) => {
   // turns below 1 dont make sense
   const MIN_RELEVANT_TURN = 1;
 
@@ -68,7 +60,10 @@ const getRelevantTurnNumber = (turnNumber: number) => {
   const nearestOddNumber = turnNumber % 2 === 0 ? turnNumber - 1 : turnNumber;
 
   //bounded between 1 and 11
-  return Math.max(MIN_RELEVANT_TURN, Math.min(MAX_RELEVANT_TURN, nearestOddNumber));
+  return Math.max(
+    MIN_RELEVANT_TURN,
+    Math.min(MAX_RELEVANT_TURN, nearestOddNumber)
+  );
 };
 
 const getPackInfo = (pack: Pack) => {
@@ -85,3 +80,6 @@ const getPackInfo = (pack: Pack) => {
 const getGeneralInfo = () => {
   return JSON.parse(JSON.stringify(GeneralInfoJson));
 };
+
+export const getFixed = (value: number, length: number) =>
+  parseFloat(value.toFixed(length));

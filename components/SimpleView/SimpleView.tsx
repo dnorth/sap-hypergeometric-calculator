@@ -1,8 +1,9 @@
 import { useState, Dispatch, SetStateAction, useEffect } from "react";
 
-import { calculateProbabilities } from "../../utils/calculatingUtils";
+import { calculateProbabilities, getFixed } from "../../utils/calculatingUtils";
 
 import Pack from "../../types/Pack";
+import { CDFValues } from "../../types/cdfUtil";
 import { FormulaValues } from "../../types/SimpleView";
 import styles from "./SimpleView.module.css";
 
@@ -10,11 +11,10 @@ export default function SimpleView() {
   const [formulaValues, setFormulaValues] = useState<FormulaValues>({
     pack: Pack.Turtle,
     turnNumber: 1,
-    numPets: 1,
-    numRolls: 1,
+    numPetsToFind: 1,
     numFrozenSlots: 0,
   });
-  const [probabilities, setProbabilities] = useState<string | null>(null);
+  const [probabilities, setProbabilities] = useState<CDFValues>([]);
 
   useEffect(() => {
     setProbabilities(calculateProbabilities(formulaValues));
@@ -36,14 +36,8 @@ export default function SimpleView() {
         />
         <InputField
           label="Number of pets you're rolling for: "
-          value={formulaValues.numPets}
-          name="numPets"
-          onChange={setFormulaValues}
-        />
-        <InputField
-          label="Number of rolls: "
-          value={formulaValues.numRolls}
-          name="numRolls"
+          value={formulaValues.numPetsToFind}
+          name="numPetsToFind"
           onChange={setFormulaValues}
         />
         <InputField
@@ -55,8 +49,11 @@ export default function SimpleView() {
       </form>
       {probabilities && (
         <div className={styles.probabilitiesContainer}>
-          Probability to find at least 1 pet given {formulaValues.numRolls}{" "}
-          roll(s): {probabilities}%
+          {probabilities.map(({ roll, probability }) => (
+            <div key={roll}>
+              Roll {roll}: {getFixed(100 * probability, 1)}%
+            </div>
+          ))}
         </div>
       )}
     </>

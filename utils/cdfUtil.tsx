@@ -1,11 +1,29 @@
-function binomialCumulativeProbability(n: number, p: number): number {
+import { getFixed } from "./calculatingUtils";
+import { CDFValues } from "../types/cdfUtil";
+
+function cdfOverN(n: number, p: number, x: number = 1): CDFValues {
+  return [...Array(n)].map((_, i) => {
+    const rollNumber = i + 1;
+
+    return {
+      roll: rollNumber,
+      probability: binomialCumulativeProbability(rollNumber, p, x),
+    };
+  });
+}
+
+export function binomialCumulativeProbability(
+  n: number,
+  p: number,
+  x: number = 1
+): number {
   let cumulativeProbability = 0;
 
-  for (let x = 1; x <= n; x++) {
+  for (x; x <= n; x++) {
     cumulativeProbability += binomialProbability(n, x, p);
   }
 
-  return cumulativeProbability;
+  return getFixed(cumulativeProbability, 3);
 }
 
 function binomialProbability(n: number, x: number, p: number): number {
@@ -28,4 +46,4 @@ function factorial(num: number): number {
   return num;
 }
 
-export default binomialCumulativeProbability;
+export default cdfOverN;
