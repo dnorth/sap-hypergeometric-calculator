@@ -1,12 +1,12 @@
 import SimpleView from "../components/SimpleView/SimpleView";
 
+import styles from "./index.module.css";
+
 export default function Home() {
   return (
-    <>
-      <h1>Hello SAP world!</h1>
-      <h2>(Golden Pack Supremacy)</h2>
-
+    <div className={styles.appContainer}>
+      <h1>SAP Probability Calculator</h1>
       <SimpleView />
-    </>
+    </div>
   );
 }

@@ -21,7 +21,7 @@ export default function SimpleView() {
   }, [formulaValues]);
 
   return (
-    <>
+    <div className={styles.simpleViewContainer}>
       <form className={styles.form}>
         <PackSelect
           value={formulaValues.pack}
@@ -35,7 +35,7 @@ export default function SimpleView() {
           onChange={setFormulaValues}
         />
         <InputField
-          label="Number of pets you're rolling for: "
+          label="# of pets you're rolling for: "
           value={formulaValues.numPetsToFind}
           name="numPetsToFind"
           onChange={setFormulaValues}
@@ -56,7 +56,7 @@ export default function SimpleView() {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }
 
@@ -81,13 +81,14 @@ const InputField = ({
   };
 
   return (
-    <div>
-      <label>{label}</label>
+    <div className={styles.inputContainer}>
+      <label htmlFor={name}>{label}</label>
       <input
         type="number"
         defaultValue={value}
         name={name}
         onChange={(event) => onLocalChange(event)}
+        className={styles.inputField}
       />
     </div>
   );
@@ -112,7 +113,7 @@ const PackSelect = ({
   };
 
   return (
-    <div>
+    <div className={styles.inputContainer}>
       <label htmlFor="pack">Pack: </label>
       <select
         id="pack"
